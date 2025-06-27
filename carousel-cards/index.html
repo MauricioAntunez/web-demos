@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="es" itemscope itemtype="https://schema.org/WebPage">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="description" content="Descubre los árboles nativos de la región del Maule en Chile. Conoce especies como Araucaria, Roble Pellín, Coigüe, Lingue, Raulí y Quillay." />
+    <title itemprop="name">Árboles Nativos del Maule - Chile</title>
+    <style>
+              * {
+            box-sizing: border-box;
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: system-ui, -apple-system, sans-serif;
+        background: hsl(220, 10%, 8%);
+        color: hsl(0, 0%, 90%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .carousel-container {
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+        display: grid;
+        grid-template-areas:
+          "scroll scroll scroll"
+          "buttons . .";
+        grid-template-columns: auto 1fr auto;
+        gap: 20px;
+        overflow: hidden;
+        contain: layout;
+      }
+
+      .carousel {
+        --cards-per-view: 1;
+        --preview-width: 60px;
+        --card-width: calc(
+          (100% - var(--preview-width) - (var(--gap) * var(--cards-per-view))) /
+            var(--cards-per-view)
+        );
+        --gap: 20px;
+        --total-cards: 6;
+        --pages: calc(ceil(var(--total-cards) / var(--cards-per-view)));
+
+        display: flex;
+        align-items: stretch;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        overscroll-behavior-x: contain;
+        gap: var(--gap);
+        padding: 20px var(--preview-width) 20px 0;
+
+        /* Smooth scrolling for better UX */
+        @media (prefers-reduced-motion: no-preference) {
+          scroll-behavior: smooth;
+        }
+
+        /* Hide scrollbar */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+
+        /* Position in grid */
+        grid-area: scroll;
+      }
+
+      .carousel::-webkit-scrollbar {
+        display: none;
+      }
+
+      .card {
+        flex: 0 0 var(--card-width);
+        min-height: 400px;
+        height: auto;
+        background: hsl(220, 10%, 15%);
+        border-radius: 12px;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        scroll-snap-align: start;
+        position: relative;
+        border: 1px solid hsl(220, 10%, 25%);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        list-style-type: none;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px hsla(0, 0%, 0%, 0.3);
+      }
+
+      .card-image {
+        width: 100%;
+        height: 200px;
+        background: linear-gradient(
+          135deg,
+          hsl(220, 70%, 50%),
+          hsl(280, 70%, 60%)
+        );
+        border-radius: 8px 8px 0 0;
+        margin-bottom: 15px;
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        color: white;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .card:nth-child(2n) .card-image {
+        background: linear-gradient(
+          135deg,
+          hsl(160, 70%, 50%),
+          hsl(220, 70%, 60%)
+        );
+      }
+
+      .card:nth-child(3n) .card-image {
+        background: linear-gradient(
+          135deg,
+          hsl(40, 70%, 50%),
+          hsl(10, 70%, 60%)
+        );
+      }
+
+      .card:nth-child(4n) .card-image {
+        background: linear-gradient(
+          135deg,
+          hsl(300, 70%, 50%),
+          hsl(340, 70%, 60%)
+        );
+      }
+
+      .card:nth-child(5n) .card-image {
+        background: linear-gradient(
+          135deg,
+          hsl(120, 70%, 50%),
+          hsl(160, 70%, 60%)
+        );
+      }
+
+      .card-content {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        min-height: 0;
+      }
+
+      .card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin:0 0 10px 0;
+        color: hsl(0, 0%, 95%);
+      }
+
+      .card-description {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: hsl(0, 0%, 70%);
+        flex-grow: 1;
+        margin-bottom: 15px;
+      }
+
+      .card-button {
+        background: linear-gradient(
+          135deg,
+          hsl(220, 70%, 50%),
+          hsl(280, 70%, 60%)
+        );
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 6px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        text-align: center;
+        display: inline-block;
+      }
+
+      .card-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px hsla(250, 70%, 50%, 0.4);
+      }
+
+      /* Fallback styles for browsers without CSS scroll features */
+      .fallback-buttons {
+        display: none;
+        gap: 10px;
+        grid-area: buttons;
+        margin: 0 5px 5px 5px;
+      }
+
+      .fallback-button {
+        background: hsla(0, 0%, 100%, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid hsla(0, 0%, 100%, 0.2);
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        transition: all 0.2s ease;
+      }
+
+      .fallback-button:hover {
+        background: hsla(0, 0%, 100%, 0.2);
+        transform: scale(1.1);
+      }
+
+      .fallback-button:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+
+      /* Always show navigation buttons */
+      .fallback-buttons {
+        display: flex;
+      }
+
+      /* Responsive design */
+      /* Mobile: 1 card (default) */
+      @media (max-width: 767px) {
+        .carousel {
+          --cards-per-view: 1;
+          --preview-width: calc(10% - var(--gap));
+          --card-width: 90%;
+        }
+
+        .card {
+          min-height: 380px;
+        }
+      }
+
+      /* Tablet: 2 cards */
+      @media (min-width: 768px) {
+        .carousel {
+          --cards-per-view: 2;
+          --preview-width: 40px;
+        }
+
+        .card {
+          min-height: 400px;
+        }
+      }
+
+              /* Desktop: 5 cards */
+        @media (min-width: 1024px) {
+          .carousel {
+            --cards-per-view: 5;
+            --preview-width: 60px;
+            --card-width: 360px;
+          }
+
+          .card {
+            min-height: 420px;
+          }
+        }
+
+        /* Large screens: 6 cards (all fit) */
+        @media (min-width: 1440px) {
+          .carousel {
+            --cards-per-view: 6;
+            --preview-width: 40px;
+            --card-width: 360px;
+          }
+
+          .card {
+            min-height: 400px;
+          }
+        }
+
+      /* Smooth scrolling for better UX */
+      @media (prefers-reduced-motion: no-preference) {
+        .carousel {
+          scroll-behavior: smooth;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main itemprop="mainContentOfPage">
+      <header>
+        <h1 class="visually-hidden">Árboles Nativos del Maule</h1>
+      </header>
+      
+      <section class="carousel-container" itemscope itemtype="https://schema.org/ItemList" aria-label="Carrusel de árboles nativos del Maule">
+        <meta itemprop="name" content="Árboles Nativos del Maule" />
+        <meta itemprop="description" content="Colección de árboles nativos de la región del Maule, Chile" />
+        
+        <div class="carousel" id="carousel" role="region" aria-label="Lista de árboles nativos" tabindex="0">
+          <article class="card" itemscope itemtype="https://schema.org/Thing" itemprop="itemListElement">
+            <meta itemprop="position" content="1" />
+            <div class="card-image" role="img" aria-label="Icono de Araucaria">🌳</div>
+            <div class="card-content">
+              <h2 class="card-title" itemprop="name">Araucaria (Pehuén)</h2>
+              <p class="card-description" itemprop="description">
+                Árbol sagrado mapuche, puede vivir más de 1000 años. Sus piñones
+                son nutritivos y tradicionales en la alimentación ancestral. Se
+                encuentra en las cordilleras del Maule.
+              </p>
+              <a href="#" class="card-button" itemprop="url" aria-label="Más información sobre Araucaria">Más información</a>
+            </div>
+          </article>
+
+          <article class="card" itemscope itemtype="https://schema.org/Thing" itemprop="itemListElement">
+            <meta itemprop="position" content="2" />
+            <div class="card-image" role="img" aria-label="Icono de Roble Pellín">🍃</div>
+            <div class="card-content">
+              <h2 class="card-title" itemprop="name">Roble Pellín</h2>
+              <p class="card-description" itemprop="description">
+                Roble nativo de gran valor ecológico y maderero. Crece en los
+                bosques templados del Maule, alcanzando hasta 40 metros de altura
+                con troncos de gran diámetro.
+              </p>
+              <a href="#" class="card-button" itemprop="url" aria-label="Más información sobre Roble Pellín">Más información</a>
+            </div>
+          </article>
+
+          <article class="card" itemscope itemtype="https://schema.org/Thing" itemprop="itemListElement">
+            <meta itemprop="position" content="3" />
+            <div class="card-image" role="img" aria-label="Icono de Coigüe">🌿</div>
+            <div class="card-content">
+              <h2 class="card-title" itemprop="name">Coigüe</h2>
+              <p class="card-description" itemprop="description">
+                Árbol siempreverde característico del bosque valdiviano. En el
+                Maule forma bosques mixtos, proporcionando hábitat para fauna
+                nativa y regulando el ciclo hídrico.
+              </p>
+              <a href="#" class="card-button" itemprop="url" aria-label="Más información sobre Coigüe">Más información</a>
+            </div>
+          </article>
+
+          <article class="card" itemscope itemtype="https://schema.org/Thing" itemprop="itemListElement">
+            <meta itemprop="position" content="4" />
+            <div class="card-image" role="img" aria-label="Icono de Lingue">🌲</div>
+            <div class="card-content">
+              <h2 class="card-title" itemprop="name">Lingue</h2>
+              <p class="card-description" itemprop="description">
+                Especie endémica de Chile, crece en quebradas húmedas del Maule.
+                Su madera es apreciada para construcción y sus hojas tienen
+                propiedades medicinales tradicionales.
+              </p>
+              <a href="#" class="card-button" itemprop="url" aria-label="Más información sobre Lingue">Más información</a>
+            </div>
+          </article>
+
+          <article class="card" itemscope itemtype="https://schema.org/Thing" itemprop="itemListElement">
+            <meta itemprop="position" content="5" />
+            <div class="card-image" role="img" aria-label="Icono de Raulí">🍂</div>
+            <div class="card-content">
+              <h2 class="card-title" itemprop="name">Raulí</h2>
+              <p class="card-description" itemprop="description">
+                Árbol caducifolio de rápido crecimiento, valioso por su madera
+                clara. En otoño sus hojas se tornan doradas, creando paisajes
+                espectaculares en los bosques maulinos.
+              </p>
+              <a href="#" class="card-button" itemprop="url" aria-label="Más información sobre Raulí">Más información</a>
+            </div>
+          </article>
+
+          <article class="card" itemscope itemtype="https://schema.org/Thing" itemprop="itemListElement">
+            <meta itemprop="position" content="6" />
+            <div class="card-image" role="img" aria-label="Icono de Quillay">🌺</div>
+            <div class="card-content">
+              <h2 class="card-title" itemprop="name">Quillay</h2>
+              <p class="card-description" itemprop="description">
+                Árbol medicinal tradicional, su corteza contiene saponinas
+                naturales. Resistente a la sequía, es común en los sectores más
+                secos de la región del Maule.
+              </p>
+              <a href="#" class="card-button" itemprop="url" aria-label="Más información sobre Quillay">Más información</a>
+            </div>
+          </article>
+        </div>
+
+        <!-- Navigation buttons -->
+        <nav class="fallback-buttons" id="navigationButtons" aria-label="Navegación del carrusel">
+          <button class="fallback-button" id="prevBtn" aria-label="Anterior árbol" title="Ir al árbol anterior">‹</button>
+          <button class="fallback-button" id="nextBtn" aria-label="Siguiente árbol" title="Ir al siguiente árbol">›</button>
+        </nav>
+      </section>
+      
+      <section>
+        <h2>Technical Implementation</h2>
+        <h3>Responsive Carousel Features</h3>
+        <ul>
+          <li><strong>Responsive design</strong> with smooth navigation</li>
+          <li><strong>Semantic HTML</strong> with Schema.org microdata</li>
+          <li><strong>Accessible design</strong> with ARIA labels and keyboard support</li>
+          <li><strong>Touch gestures</strong> that work beautifully on mobile</li>
+          <li><strong>Dynamic card detection</strong> that matches visual reality</li>
+          <li><strong>Perfect preview sizing</strong> across all devices</li>
+          <li><strong>Smooth scroll-snap</strong> positioning</li>
+          <li><strong>Modern CSS</strong> with flexbox and custom properties</li>
+          <li><strong>Clean button navigation</strong> that works on all screen sizes</li>
+        </ul>
+        
+        <h3>Responsive Breakpoints</h3>
+        <ul>
+          <li><strong>Mobile</strong> (≤767px): 1 card per view with proportional preview</li>
+          <li><strong>Tablet</strong> (768px+): 2 cards per view with 40px subtle hint</li>
+          <li><strong>Desktop</strong> (1024px+): 5 cards per view with 60px balanced preview</li>
+          <li><strong>Large screens</strong> (1440px+): 6 cards per view with minimal 40px preview</li>
+        </ul>
+        
+        <h3>Key Technologies</h3>
+        <ul>
+          <li><strong>CSS Scroll Snap</strong>: scroll-snap-type: x mandatory for precise positioning</li>
+          <li><strong>CSS Grid Layout</strong>: Used for navigation positioning</li>
+          <li><strong>Flexbox</strong>: align-items: stretch for consistent card heights</li>
+          <li><strong>CSS Custom Properties</strong>: Dynamic card width and preview calculations</li>
+          <li><strong>Progressive Enhancement</strong>: Graceful degradation for older browsers</li>
+          <li><strong>Performance Optimization</strong>: Hardware-accelerated CSS animations</li>
+        </ul>
+        
+        <h3>Accessibility Features</h3>
+        <ul>
+          <li><strong>ARIA labels</strong> for screen readers</li>
+          <li><strong>Keyboard navigation</strong> with arrow keys</li>
+          <li><strong>Semantic markup</strong> using article, section, nav elements</li>
+          <li><strong>Focus management</strong> with proper tabindex</li>
+          <li><strong>Role attributes</strong> for landmark navigation</li>
+        </ul>
+      </section>
+    </main>
+
+    <script>
+      // Minimal JavaScript for fallback support and enhanced UX
+      class CarouselEnhancer {
+        constructor() {
+          this.carousel = document.getElementById("carousel");
+          this.navigationButtons = document.getElementById("navigationButtons");
+          this.currentIndex = 0;
+
+          // Initialize navigation buttons
+          this.initButtons();
+
+          // Always add touch gestures and keyboard support
+          this.initEnhancements();
+        }
+
+        initButtons() {
+          const prevBtn = document.getElementById("prevBtn");
+          const nextBtn = document.getElementById("nextBtn");
+
+          // Bind navigation events
+          prevBtn.addEventListener("click", () => this.prevPage());
+          nextBtn.addEventListener("click", () => this.nextPage());
+
+          // Handle scroll updates for button states
+          this.carousel.addEventListener(
+            "scroll",
+            this.throttle(() => {
+              this.updateCurrentPage();
+            }, 100)
+          );
+
+          // Handle resize
+          window.addEventListener(
+            "resize",
+            this.debounce(() => {
+              this.updateLayout();
+            }, 250)
+          );
+
+          this.updateNavigation();
+        }
+
+        initEnhancements() {
+          // Add keyboard navigation
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowLeft") {
+              e.preventDefault();
+              this.prevPage();
+            } else if (e.key === "ArrowRight") {
+              e.preventDefault();
+              this.nextPage();
+            }
+          });
+
+          // Add touch gesture enhancement
+          this.addTouchGestures();
+        }
+
+        addTouchGestures() {
+          let startX = 0;
+          let startY = 0;
+          let startTime = 0;
+          let isDragging = false;
+
+          this.carousel.addEventListener(
+            "touchstart",
+            (e) => {
+              startX = e.touches[0].clientX;
+              startY = e.touches[0].clientY;
+              startTime = Date.now();
+              isDragging = false;
+            },
+            { passive: true }
+          );
+
+          this.carousel.addEventListener(
+            "touchmove",
+            (e) => {
+              if (!startX || !startY) return;
+
+              const currentX = e.touches[0].clientX;
+              const currentY = e.touches[0].clientY;
+
+              const diffX = Math.abs(startX - currentX);
+              const diffY = Math.abs(startY - currentY);
+
+              // Determine if this is a horizontal swipe
+              if (diffX > diffY && diffX > 10) {
+                isDragging = true;
+                // Prevent vertical scrolling when swiping horizontally
+                e.preventDefault();
+              }
+            },
+            { passive: false }
+          );
+
+          this.carousel.addEventListener(
+            "touchend",
+            (e) => {
+              if (!startX || !startY || !isDragging) {
+                startX = 0;
+                startY = 0;
+                isDragging = false;
+                return;
+              }
+
+              const endX = e.changedTouches[0].clientX;
+              const endTime = Date.now();
+
+              const diffX = startX - endX;
+              const timeDiff = endTime - startTime;
+              const velocity = Math.abs(diffX) / timeDiff;
+
+              // Only handle significant horizontal swipes
+              if (Math.abs(diffX) > 30 || velocity > 0.5) {
+                const direction = diffX > 0 ? 1 : -1;
+                this.navigateToPage(direction);
+              }
+
+              startX = 0;
+              startY = 0;
+              isDragging = false;
+            },
+            { passive: true }
+          );
+        }
+
+        navigateToPage(direction) {
+          const cardsPerView = this.getCardsPerView();
+          const cards = this.carousel.querySelectorAll(".card");
+          const totalCards = cards.length;
+          const totalPages = Math.ceil(totalCards / cardsPerView);
+
+          // Calculate current page based on scroll position
+          const scrollLeft = this.carousel.scrollLeft;
+          const containerWidth = this.carousel.offsetWidth;
+          const currentPage = Math.round(scrollLeft / containerWidth);
+
+          // Calculate target page
+          let targetPage = currentPage + direction;
+          targetPage = Math.max(0, Math.min(targetPage, totalPages - 1));
+
+          // Calculate precise scroll position for the target page
+          const cardWidth = cards[0].offsetWidth;
+          const gap = parseInt(getComputedStyle(this.carousel).gap) || 20;
+          const targetScrollLeft =
+            targetPage * cardsPerView * (cardWidth + gap);
+
+          // Smooth scroll to the exact position
+          this.carousel.scrollTo({
+            left: targetScrollLeft,
+            behavior: "smooth",
+          });
+
+          // Update current index for navigation
+          this.currentIndex = targetPage;
+          this.updateNavigation();
+        }
+
+        getCardsPerView() {
+          const cards = this.carousel.querySelectorAll(".card");
+          if (cards.length === 0) return 1;
+          
+          const containerWidth = this.carousel.clientWidth;
+          const cardWidth = cards[0].offsetWidth;
+          const gap = parseInt(getComputedStyle(this.carousel).gap) || 20;
+          
+          // Calculate how many cards actually fit in the visible area
+          const cardsPerView = Math.floor((containerWidth + gap) / (cardWidth + gap));
+          
+          // Ensure we return at least 1 and not more than total cards
+          return Math.max(1, Math.min(cardsPerView, cards.length));
+        }
+
+        goToPage(pageIndex) {
+          const cardsPerView = this.getCardsPerView();
+          const cards = this.carousel.querySelectorAll(".card");
+          
+          if (cards.length === 0) return;
+          
+          // Calculate precise scroll position for the target page
+          const cardWidth = cards[0].offsetWidth;
+          const gap = parseInt(getComputedStyle(this.carousel).gap) || 20;
+          const scrollPosition = pageIndex * cardsPerView * (cardWidth + gap);
+
+          this.carousel.scrollTo({
+            left: scrollPosition,
+            behavior: "smooth",
+          });
+
+          this.currentIndex = pageIndex;
+          this.updateNavigation();
+        }
+
+        prevPage() {
+          if (this.currentIndex > 0) {
+            this.currentIndex--;
+            this.goToPage(this.currentIndex);
+          }
+        }
+
+        nextPage() {
+          const cardsPerView = this.getCardsPerView();
+          const cards = this.carousel.querySelectorAll(".card");
+          const totalPages = Math.ceil(cards.length / cardsPerView);
+          
+          if (this.currentIndex < (totalPages - 1)) {
+            this.currentIndex++;
+            this.goToPage(this.currentIndex);
+          }
+        }
+
+        updateCurrentPage() {
+          const cardsPerView = this.getCardsPerView();
+          const cards = this.carousel.querySelectorAll(".card");
+          
+          if (cards.length === 0) return;
+          
+          const cardWidth = cards[0].offsetWidth;
+          const gap = parseInt(getComputedStyle(this.carousel).gap) || 20;
+          const scrollLeft = this.carousel.scrollLeft;
+          const pageWidth = cardsPerView * (cardWidth + gap);
+          const totalPages = Math.ceil(cards.length / cardsPerView);
+          
+          // Calculate which page we're on based on scroll position
+          let newIndex = Math.round(scrollLeft / pageWidth);
+          
+          // Clamp the index to valid range
+          newIndex = Math.max(0, Math.min(newIndex, totalPages - 1));
+
+          if (newIndex !== this.currentIndex) {
+            this.currentIndex = newIndex;
+            this.updateNavigation();
+          }
+        }
+
+        updateNavigation() {
+          const prevBtn = document.getElementById("prevBtn");
+          const nextBtn = document.getElementById("nextBtn");
+
+          if (!prevBtn || !nextBtn) return;
+
+          const cardsPerView = this.getCardsPerView();
+          const cards = this.carousel.querySelectorAll(".card");
+          const totalCards = cards.length;
+          const totalPages = Math.ceil(totalCards / cardsPerView);
+
+          // If all cards fit in one view, disable both buttons
+          if (totalPages <= 1) {
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            return;
+          }
+
+          // For multiple pages, use current index
+          prevBtn.disabled = this.currentIndex <= 0;
+          nextBtn.disabled = this.currentIndex >= (totalPages - 1);
+        }
+
+        updateLayout() {
+          // Recalculate layout on resize
+          this.updateNavigation();
+        }
+
+        throttle(func, limit) {
+          let inThrottle;
+          return function () {
+            const args = arguments;
+            const context = this;
+            if (!inThrottle) {
+              func.apply(context, args);
+              inThrottle = true;
+              setTimeout(() => (inThrottle = false), limit);
+            }
+          };
+        }
+
+        debounce(func, wait) {
+          let timeout;
+          return function executedFunction(...args) {
+            const later = () => {
+              clearTimeout(timeout);
+              func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+          };
+        }
+      }
+
+      // Initialize when DOM is loaded
+      document.addEventListener("DOMContentLoaded", () => {
+        // Use requestIdleCallback for non-blocking initialization
+        if ("requestIdleCallback" in window) {
+          requestIdleCallback(() => {
+            new CarouselEnhancer();
+          });
+        } else {
+          setTimeout(() => {
+            new CarouselEnhancer();
+          }, 0);
+        }
+      });
+    </script>
+  </body>
+</html>
